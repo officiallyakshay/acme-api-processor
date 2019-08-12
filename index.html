@@ -30,19 +30,59 @@
 
 			//returns object where key is first letter of company name
 			//value for each key is the array of those companies
-			const groupedCompaniesByLetter = (companies) => {
-				
+			const groupCompaniesByLetter = (companies) => {
+				const sameFirstLetter = {};
+        companies.map(company => {
+          let first = (company.name).charAt(0);
+          if( !(first in sameFirstLetter) ) {
+            sameFirstLetter[first] = [company];
+          }
+          else {
+            sameFirstLetter[first].push(company);
+          }
+        });
+        return sameFirstLetter;
 			};
 
-			const groupedCompaniesByLetter = groupedCompaniesByLetter(companies);
+			const groupedCompaniesByLetter = groupCompaniesByLetter(companies);
 			console.log(groupedCompaniesByLetter);
 
 			//returns object where key is a state
 			//value for each key is the array of those companies in that state
+			const groupCompaniesByState = (companies) => {
+				const sameState = {};
+				companies.map(company => {
+					let key = company.state;
+					if ( !(key in sameState) ) {
+						sameState[key] = [company];
+					} else {
+						sameState[key].push(company);
+					}
+				});
+				return sameState;
+			}
+
 			const groupedCompaniesByState = groupCompaniesByState(companies);
 			console.log(groupedCompaniesByState);
 
 			//returns an array of the offerings with each offering having a company and product
+			const processOfferings = ({ companies, products, offerings }) => {
+				const totalArr = [];
+				offerings.map(offering => {
+					products.map(product => {
+						if (offering.productId === product.id) {
+							totalArr.push(products);
+						}
+					});
+					companies.map(company => {
+						if (offering.companyId === companies.id) {
+							totalArr.push(companies);
+						}
+					})
+				});
+				return totalArr;
+			}
+
 			const processedOfferings = processOfferings({ companies, products, offerings });
 			console.log(processedOfferings);
 
