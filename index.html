@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js'></script>
+</head>
+<body>
+
+	<script>
+		
+		const loadData = async() => {
+			const urls = [
+				'https://acme-users-api-rev.herokuapp.com/api/companies',
+				'https://acme-users-api-rev.herokuapp.com/api/products',
+				'https://acme-users-api-rev.herokuapp.com/api/offerings'
+			];
+
+			const responses = await Promise.all(urls.map( url => axios.get(url)));
+			const [companies, products, offerings] = responses.map(response => response.data);
+
+			//return products within a price range
+			const findProductsInPriceRange = (products, suggestedPrice) => {
+				const items = products.filter( product => product.suggestedPrice > 1 && product.suggestedPrice < 15);
+				const names = items.map( item => item.description );
+				return names;
+			};
+
+			const productsInPriceRange = findProductsInPriceRange(products, { min: 1, max: 15});
+			console.log(productsInPriceRange);
+
+			//returns object where key is first letter of company name
+			//value for each key is the array of those companies
+			const groupedCompaniesByLetter = (companies) => {
+				
+			};
+
+			const groupedCompaniesByLetter = groupedCompaniesByLetter(companies);
+			console.log(groupedCompaniesByLetter);
+
+			//returns object where key is a state
+			//value for each key is the array of those companies in that state
+			const groupedCompaniesByState = groupCompaniesByState(companies);
+			console.log(groupedCompaniesByState);
+
+			//returns an array of the offerings with each offering having a company and product
+			const processedOfferings = processOfferings({ companies, products, offerings });
+			console.log(processedOfferings);
+
+			//returns the companies that have n or more offerings
+			const threeOrMoreOfferings = companiesByNumberOfOfferings(companies, offerings, 3);
+			console.log(threeOrMoreOfferings);
+
+			//returns array of products where each product has the average price of it's offerings
+			const processedProducts = processedProducts({ products, offerings });
+			console.log(processedProducts);
+
+		}
+		loadData();
+
+	</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
