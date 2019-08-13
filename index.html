@@ -20,7 +20,7 @@
 
 			//return products within a price range
 			const findProductsInPriceRange = (products, suggestedPrice) => {
-				const items = products.filter( product => product.suggestedPrice > 1 && product.suggestedPrice < 15);
+				const items = products.filter( product => product.suggestedPrice > 1 && product.suggestedPrice < 15 );
 				const names = items.map( item => item.description );
 				return names;
 			};
@@ -67,31 +67,50 @@
 
 			//returns an array of the offerings with each offering having a company and product
 			const processOfferings = ({ companies, products, offerings }) => {
-				const totalArr = [];
-				offerings.map(offering => {
-					products.map(product => {
+				//map over offerings & add properties from companies and products
+				return offerings.map(offering => {
+					const updated = {...offering};
+					products.filter(product => {
 						if (offering.productId === product.id) {
-							totalArr.push(products);
+							updated.product = product;
 						}
 					});
-					companies.map(company => {
-						if (offering.companyId === companies.id) {
-							totalArr.push(companies);
+					companies.filter(company => {
+						if (offering.companyId === company.id) {
+							updated.company = company;
 						}
 					})
+					return updated;
 				});
-				return totalArr;
 			}
 
 			const processedOfferings = processOfferings({ companies, products, offerings });
 			console.log(processedOfferings);
 
 			//returns the companies that have n or more offerings
+			const companiesByNumberOfOfferings = (companies, offerings, n) => {
+
+				return offerings.map(offering => {
+					const updated = {...offering};
+					companies.filter(company => {
+						if (offering.companyId === company.id) {
+							updated.company = company;
+						}
+					})
+					return updated;
+				});
+				
+			}
+
 			const threeOrMoreOfferings = companiesByNumberOfOfferings(companies, offerings, 3);
 			console.log(threeOrMoreOfferings);
 
 			//returns array of products where each product has the average price of it's offerings
-			const processedProducts = processedProducts({ products, offerings });
+			const processProducts = ({ products, offerings }) => {
+
+			}
+
+			const processedProducts = processProducts({ products, offerings });
 			console.log(processedProducts);
 
 		}
