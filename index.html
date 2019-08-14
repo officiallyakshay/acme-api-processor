@@ -90,23 +90,77 @@
 			//returns the companies that have n or more offerings
 			const companiesByNumberOfOfferings = (companies, offerings, n) => {
 
-				return offerings.map(offering => {
-					const updated = {...offering};
-					companies.filter(company => {
-						if (offering.companyId === company.id) {
-							updated.company = company;
-						}
-					})
-					return updated;
+				const companyOccurrence = {}
+				offerings.forEach(offering => {
+					const offeringCompanyId = offering.companyId;
+					if ( !(offeringCompanyId in companyOccurrence) ) {
+						companyOccurrence[offeringCompanyId] = 1;
+					} else {
+						companyOccurrence[offeringCompanyId]++;
+					}
 				});
-				
+
+				const filteredCompany = companies.filter(company => {
+					return (companyOccurrence[company.id] >= n)							
+				});
+				return filteredCompany;
+
 			}
+
 
 			const threeOrMoreOfferings = companiesByNumberOfOfferings(companies, offerings, 3);
 			console.log(threeOrMoreOfferings);
 
 			//returns array of products where each product has the average price of it's offerings
 			const processProducts = ({ products, offerings }) => {
+
+
+				const averagePrice = {}
+				offerings.forEach(offering => {
+					const offeringPrice = offering.price;
+					if ( !(offeringPrice in averagePrice) ) {
+						averagePrice[offeringPrice] = offering.price;
+					} else {
+						averagePrice[offeringPrice]++;
+					}
+				});
+				return averagePrice[offeringPrice] / (averagePrice[offeringPrice].length)
+
+				// const filteredProducts = products.filter(product => {
+				// 	return (averagePrice[company.id] >= n)							
+				// });
+				// return filteredProducts;
+
+
+
+				// offerings.map(offering => {
+				// 	const offeringPrice = offering.price;
+				// });
+				// const filteredProductPrice = products.filter(product => {
+				// });
+				// return filteredProductPrice;
+
+				// return offerings.map(offering => {
+				// 	const updated = {...offering};
+				// 	products.filter(product => {
+				// 		if (offering.productId === product.id) {
+				// 			updated.product = product;
+				// 		}
+				// 	});
+				// 	console.log(updated)
+				// 	return updated;
+				// });
+
+				products.forEach(product => {
+					const productArr = [];
+					return offerings.map(offering => {
+						if (offering.productId === product.id) {
+							console.log(offering.price)
+							productArr.push(offering.price);
+						}
+					});
+					return productArr;
+				});
 
 			}
 
