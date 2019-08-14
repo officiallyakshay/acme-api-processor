@@ -113,60 +113,31 @@
 
 			//returns array of products where each product has the average price of it's offerings
 			const processProducts = ({ products, offerings }) => {
-
-
-				const averagePrice = {}
+				const averagePrice = {};
 				offerings.forEach(offering => {
 					const offeringPrice = offering.price;
 					if ( !(offeringPrice in averagePrice) ) {
-						averagePrice[offeringPrice] = offering.price;
+						averagePrice[offeringPrice] = 1;
 					} else {
 						averagePrice[offeringPrice]++;
 					}
 				});
-				return averagePrice[offeringPrice] / (averagePrice[offeringPrice].length)
+				console.log(averagePrice)
 
-				// const filteredProducts = products.filter(product => {
-				// 	return (averagePrice[company.id] >= n)							
-				// });
-				// return filteredProducts;
-
-
-
-				// offerings.map(offering => {
-				// 	const offeringPrice = offering.price;
-				// });
-				// const filteredProductPrice = products.filter(product => {
-				// });
-				// return filteredProductPrice;
-
-				// return offerings.map(offering => {
-				// 	const updated = {...offering};
-				// 	products.filter(product => {
-				// 		if (offering.productId === product.id) {
-				// 			updated.product = product;
-				// 		}
-				// 	});
-				// 	console.log(updated)
-				// 	return updated;
-				// });
-
-				products.forEach(product => {
+				return offerings.map(offering => {
 					const productArr = [];
-					return offerings.map(offering => {
-						if (offering.productId === product.id) {
-							console.log(offering.price)
-							productArr.push(offering.price);
+					products.filter(product => {
+						if (averagePrice[offeringPrice] <= 1) {
+							productArr['averagePrice'] = product.suggestedPrice;
+						} else {
+							productArr['averagePrice'] = (offeringPrice * averagePrice[offeringPrice]) / averagePrice[offeringPrice];
 						}
 					});
 					return productArr;
 				});
-
 			}
-
 			const processedProducts = processProducts({ products, offerings });
 			console.log(processedProducts);
-
 		}
 		loadData();
 
@@ -174,24 +145,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
